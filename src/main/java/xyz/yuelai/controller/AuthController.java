@@ -4,11 +4,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import xyz.yuelai.pojo.dto.ResponseDTO;
+import xyz.yuelai.service.IAuthService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,20 +27,22 @@ import java.util.Map;
 @RequestMapping(value = "/auth")
 public class AuthController {
 
+    private IAuthService authService;
+
+
+    public AuthController(IAuthService authService) {
+        this.authService = authService;
+    }
+
     @ApiOperation(value = "用于处理用户的登陆请求")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户登陆名", required = true),
             @ApiImplicitParam(name = "password", value = "用户登陆密码", required = true)})
     @ResponseBody
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Map<String, String> login(@RequestParam String username, @RequestParam String password) {
-        Map<String, String> params = new HashMap<String, String>(5){{
-            put("username", username);
-            put("password", password);
-        }};
-        System.out.println();
-        System.out.println(params);
-        return params;
+    @RequestMapping(value = "/loin", method = RequestMethod.POST)
+    public ResponseDTO login(@RequestParam String username, @RequestParam String password) {
+        ResponseDTO loginDTO = authService.login(username, password);
+        return loginDTO;
     }
 
     @ApiOperation(value = "用于处理用户的注册请求")
@@ -47,15 +52,9 @@ public class AuthController {
             @ApiImplicitParam(name = "code", value = "验证码", required = true)})
     @ResponseBody
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public Map<String, String> register(@RequestParam String username, @RequestParam String password, @RequestParam String code) {
-
-        Map<String, String> params = new HashMap<String, String>(5){{
-            put("username", username);
-            put("password", password);
-            put("code", code);
-        }};
-        System.out.println(params);
-        return params;
+    public ResponseDTO register(@RequestParam String username, @RequestParam String password, @RequestParam String code) {
+        ResponseDTO responseDTO = authService.register(username, password, code);
+        return responseDTO;
     }
 
     @ApiOperation(value = "用于处理用户的登出请求")
