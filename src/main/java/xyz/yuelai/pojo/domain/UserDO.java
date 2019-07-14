@@ -66,20 +66,20 @@ public class UserDO {
 
     @Column(name = "gmt_create")
     public Timestamp getGmtCreate() {
-        return gmtCreate;
+        return (Timestamp) gmtCreate.clone();
     }
 
     public void setGmtCreate(Timestamp gmtCreate) {
-        this.gmtCreate = gmtCreate;
+        this.gmtCreate = (Timestamp) gmtCreate.clone();
     }
 
     @Column(name = "gmt_modified")
     public Timestamp getGmtModified() {
-        return gmtModified;
+        return (Timestamp) gmtModified.clone();
     }
 
     public void setGmtModified(Timestamp gmtModified) {
-        this.gmtModified = gmtModified;
+        this.gmtModified = (Timestamp) gmtModified.clone();
     }
 
     @Column(name = "is_forbidden")
