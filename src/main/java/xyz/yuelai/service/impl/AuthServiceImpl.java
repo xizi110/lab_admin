@@ -1,5 +1,9 @@
 package xyz.yuelai.service.impl;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -8,6 +12,7 @@ import xyz.yuelai.pojo.domain.UserDO;
 import xyz.yuelai.pojo.dto.ResponseDTO;
 import xyz.yuelai.service.IAuthService;
 import xyz.yuelai.util.Constant;
+import xyz.yuelai.util.EncryptUtil;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -21,10 +26,8 @@ import java.time.LocalDateTime;
 public class AuthServiceImpl implements IAuthService {
 
     private IUserDAO userDAO;
-    private HibernateTemplate hibernateTemplate;
 
-    public AuthServiceImpl(IUserDAO userDAO, HibernateTemplate hibernateTemplate) {
-        this.hibernateTemplate = hibernateTemplate;
+    public AuthServiceImpl(IUserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
@@ -33,7 +36,6 @@ public class AuthServiceImpl implements IAuthService {
 
         int code ;
         String msg ;
-        UserDO userDO = null ;
 
         if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
             code = -1;
@@ -44,14 +46,18 @@ public class AuthServiceImpl implements IAuthService {
             msg = "用户名或密码长度过长，请保证在" + Constant.LEGAL_STRING_LENGTH + "个字符以内！";
 
         }else {
-            code = 0;
-            msg = "succeed";
-            userDO = new UserDO();
-            userDO.setUsername(username);
-            userDO.setPassword(password);
+            Subject subject = SecurityUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            try {
+                subject.login(token);
+                code = 0;
+                msg = "succeed: " + subject.isAuthenticated();
+            }catch (AuthenticationException e){
+                code = -1;
+                msg = "failed: " + subject.isAuthenticated();
+            }
         }
-
-        return new ResponseDTO(code, msg, userDO);
+        return new ResponseDTO(code, msg);
     }
 
     @Override
@@ -67,19 +73,19 @@ public class AuthServiceImpl implements IAuthService {
                 password.length() > Constant.LEGAL_STRING_LENGTH){
             code = -1;
             msg = "用户名或密码长度过长，请保证在" + Constant.LEGAL_STRING_LENGTH + "个字符以内！";
-
+            throw new NullPointerException("空值");
         }else if(StringUtils.isEmpty(vcode) || vcode.length() > Constant.LEGAL_STRING_LENGTH){
             code = -1;
             msg = "验证码不正确！";
         }else {
             userDO = new UserDO();
             userDO.setUsername(username);
-            userDO.setPassword(password);
+            userDO.setPassword(EncryptUtil.encrypt(password, username));
             userDO.setGmtCreate(Timestamp.valueOf(LocalDateTime.now()));
             userDO.setGmtModified(Timestamp.valueOf(LocalDateTime.now()));
             userDO.setForbidden((byte) 0);
             userDO.setNickname("test");
-            hibernateTemplate.save(userDO);
+            userDAO.save(userDO);
             code = 0;
             msg = "succeed";
         }

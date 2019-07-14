@@ -71,6 +71,15 @@ public class AuthController {
         return params;
     }
 
+    @ApiOperation(value = "服务器返回未认证信息")
+    @ResponseBody
+    @RequestMapping(value = "/unauthenticated", method = RequestMethod.GET)
+    public ResponseDTO unauthenticated() {
+        return new ResponseDTO(-1, "未认证用户。");
+    }
+
+
+
 
 
 }

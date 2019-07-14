@@ -17,12 +17,11 @@ import java.util.List;
 @Repository
 public class UserDAOImpl implements IUserDAO {
 
-    @Autowired
     private HibernateTemplate hibernateTemplate;
 
-//    public UserDAOImpl(HibernateTemplate hibernateTemplate) {
-//        this.hibernateTemplate = hibernateTemplate;
-//    }
+    public UserDAOImpl(HibernateTemplate hibernateTemplate) {
+        this.hibernateTemplate = hibernateTemplate;
+    }
 
     @Override
     public void save(UserDO userDO) {
@@ -52,5 +51,14 @@ public class UserDAOImpl implements IUserDAO {
 
     private Session getSession(){
         return hibernateTemplate.getSessionFactory().getCurrentSession();
+    }
+
+    @Override
+    public UserDO getUserByUsername(String username) {
+        String hql = "from UserDO u where u.username = :username";
+        UserDO userDO = getSession().createQuery(hql, UserDO.class)
+                .setParameter("username", username)
+                .getSingleResult();
+        return userDO;
     }
 }
