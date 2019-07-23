@@ -1,5 +1,6 @@
 package xyz.yuelai.config;
 
+import org.apache.shiro.web.servlet.ShiroFilter;
 import org.springframework.lang.Nullable;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
