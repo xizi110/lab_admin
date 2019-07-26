@@ -12,6 +12,10 @@ import java.util.List;
 
 public interface IPermissionDAO extends ICommonDAO<PermissionDO> {
 
-    List<PermissionDO> listByUserId(Long userId);
+    /**
+     * 列出所有权限
+     * @return
+     */
+    List<PermissionDO> list();
 
 }

@@ -19,9 +19,11 @@ import java.sql.Timestamp;
 public class PermissionDO implements Serializable {
 
     private Long permissionId;
+    private Long permissionPid;
     private String permissionURI;
     private String permissionName;
-    private String permissionDesc;
+    private String permissionValue;
+    private String permissionType;
     private Timestamp gmtCreate;
     private Timestamp gmtModified;
     private Byte enable;
@@ -43,9 +45,9 @@ public class PermissionDO implements Serializable {
         return permissionName;
     }
 
-    @Column(name = "permission_desc")
-    public String getPermissionDesc() {
-        return permissionDesc;
+    @Column(name = "permission_value")
+    public String getPermissionValue() {
+        return permissionValue;
     }
 
     @Column(name = "gmt_create")
@@ -61,5 +63,15 @@ public class PermissionDO implements Serializable {
     @Column(name = "is_enable")
     public Byte getEnable() {
         return enable;
+    }
+
+    @Column(name = "permission_pid")
+    public Long getPermissionPid() {
+        return permissionPid;
+    }
+
+    @Column(name = "permission_type")
+    public String getPermissionType() {
+        return permissionType;
     }
 }

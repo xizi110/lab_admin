@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @Data
 @ToString
-public class LoginDTO implements Serializable {
+public class AuthFormDTO implements Serializable {
     private String username;
     private String password;
     private String code;

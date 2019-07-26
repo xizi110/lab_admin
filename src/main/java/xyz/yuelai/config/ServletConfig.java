@@ -21,11 +21,12 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = {ServletConfig.class,Swagger2Config.class})
+@ComponentScan(basePackageClasses = {ServletConfig.class, Swagger2Config.class, ShiroConfig.class})
 public class ServletConfig implements WebMvcConfigurer {
 
     /**
      * 默认静态资源处理
+     *
      * @param configurer
      */
     @Override
@@ -35,6 +36,7 @@ public class ServletConfig implements WebMvcConfigurer {
 
     /**
      * 服务器响应客户端请求编码、文件类型设置
+     *
      * @param converters
      */
     @Override

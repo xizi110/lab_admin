@@ -45,13 +45,7 @@ public class RoleDAOImpl implements IRoleDAO{
 
     @Override
     public List<RoleDO> listByUserId(Long userId) {
-        String sql = "select auth_role.* from auth_role,auth_user_role " +
-                "where auth_user_role.user_id = :user_id and  auth_role.role_id = auth_user_role.role_id";
-
-        List<RoleDO> roleDOList = getSession().createSQLQuery(sql)
-                .setParameter("user_id", userId)
-                .addEntity(RoleDO.class).list();
-        return roleDOList;
+        return null;
     }
 
     @Override

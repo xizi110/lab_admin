@@ -1,5 +1,7 @@
 package xyz.yuelai.util;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
+
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +26,11 @@ public class RandomUtil {
             randStr.append(DEFAULT_AVAILABLE_STRING.charAt(index));
         }
         return randStr.toString();
+    }
+
+    public static String randHash(){
+        String s = randString(10);
+        return new Md5Hash(s).toHex();
     }
 
     public static void main(String[] args) {

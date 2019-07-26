@@ -2,7 +2,7 @@ package xyz.yuelai.dao.impl;
 
 import org.hibernate.Session;
 import org.springframework.orm.hibernate5.HibernateTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import xyz.yuelai.dao.IPermissionDAO;
 import xyz.yuelai.pojo.domain.PermissionDO;
 
@@ -13,8 +13,7 @@ import java.util.List;
  * @date 2019/7/23-10:23
  */
 
-
-@Service
+@Repository
 public class PermissionDAOImpl implements IPermissionDAO {
 
     private HibernateTemplate hibernateTemplate;
@@ -29,15 +28,13 @@ public class PermissionDAOImpl implements IPermissionDAO {
 
 
     @Override
-    public List<PermissionDO> listByUserId(Long userId) {
-        String sql = "select auth_permission.* from auth_permission,auth_user_permission " +
-                "where auth_user_permission.user_id = :user_id and  " +
-                "auth_permission.permission_id = auth_user_permission.permission_id";
+    public List<PermissionDO> list() {
 
-        List<PermissionDO> permissionDOList = getSession().createSQLQuery(sql)
-                .setParameter("user_id", userId)
-                .addEntity(PermissionDO.class).list();
-        return permissionDOList;
+        List<PermissionDO> permissions = hibernateTemplate.execute(session -> {
+            String sql = "SELECT * FROM auth_permission";
+            return session.createSQLQuery(sql).addEntity(PermissionDO.class).list();
+        });
+        return permissions;
     }
 
     @Override

@@ -57,6 +57,7 @@
             <tx:method name="*" propagation="REQUIRED" />
 
             <tx:method name="login" propagation="REQUIRED" read-only="true" />
+            <tx:method name="logout" propagation="REQUIRED" read-only="true" />
             <tx:method name="get*" propagation="REQUIRED" read-only="true" />
             <tx:method name="list*" propagation="REQUIRED" read-only="true" />
         </tx:attributes>

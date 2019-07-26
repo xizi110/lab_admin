@@ -1,13 +1,21 @@
 package xyz.yuelai.service.impl;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.springframework.lang.Nullable;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import xyz.yuelai.dao.IUserDAO;
+import xyz.yuelai.pojo.domain.PermissionDO;
+import xyz.yuelai.pojo.domain.RoleDO;
 import xyz.yuelai.pojo.domain.UserDO;
 import xyz.yuelai.pojo.dto.ResponseDTO;
 import xyz.yuelai.service.IUserService;
 import xyz.yuelai.util.Constant;
+
+import java.util.List;
 
 /**
  * @author 李泽众
@@ -43,5 +51,15 @@ public class UserServiceImpl implements IUserService {
             msg = "succeed";
         }
         return new ResponseDTO(code, msg, userDO);
+    }
+
+    @Override
+    public List<RoleDO> listRolesByUserId(Long userId) {
+       return userDAO.listRolesByUserId(userId);
+    }
+
+    @Override
+    public List<PermissionDO> listPermissionsByRoleId(Long roleId) {
+      return userDAO.listPermissionsByRoleId(roleId);
     }
 }

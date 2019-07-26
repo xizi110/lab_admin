@@ -24,6 +24,7 @@ public class Constant {
      * 10004：禁止访问
      * 10005：服务器出现异常
      * 10006：已经认证
+     * 10007：token无效
      */
     public static final int CODE_OK = 10000;
     public static final int CODE_ERROR_PARAMS = 10001;
@@ -32,5 +33,36 @@ public class Constant {
     public static final int CODE_FORBIDDEN = 10004;
     public static final int CODE_SERVER_EXCEPTION = 10005;
     public static final int CODE_AUTHENTICATED = 10006;
+    public static final int INVALID_TOKEN = 10007;
+
+
+    /**
+     * JWT-salt
+     */
+    public static final String LOGIN_SALT = "LiZeZhong123";
+    /**
+     *  request请求头属性
+     */
+    public static final String REQUEST_AUTH_HEADER="Authorization";
+
+    /**
+     *  JWT-account
+     */
+    public static final String USERNAME = "username";
+
+    /**
+     *  JWT-currentTimeMillis
+     */
+    public final static String CURRENT_TIME_MILLIS = "currentTimeMillis";
+
+    /**
+     *  JWT-secret_key
+     */
+    public final static String SECRET_KEY = "LiZeZhong123";
+
+    /**
+     *  JWT-token expire time
+     */
+    public final static Integer TOKEN_EXPIRE_TIME = 30;
 
 }
