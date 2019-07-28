@@ -26,9 +26,6 @@ import xyz.yuelai.util.Constant;
 public class AuthController {
 
     private IAuthService authService;
-    @Autowired
-    private IPermissionService permissionService;
-
 
     public AuthController(IAuthService authService) {
         this.authService = authService;
@@ -91,7 +88,7 @@ public class AuthController {
     @ResponseBody
     @RequestMapping(value = "/401")
     public ResponseDTO httpCode401() {
-        return new ResponseDTO(Constant.INVALID_TOKEN, "无效的token");
+        return new ResponseDTO(Constant.CODE_INVALID_TOKEN, "无效的token");
     }
 
 
