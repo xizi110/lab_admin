@@ -7,7 +7,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.Charset;
@@ -21,7 +20,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = {ServletConfig.class, Swagger2Config.class, ShiroConfig.class})
+@ComponentScan(basePackageClasses = {Swagger2Config.class, ShiroConfig.class})
 public class ServletConfig implements WebMvcConfigurer {
 
     /**

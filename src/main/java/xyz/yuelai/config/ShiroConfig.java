@@ -13,6 +13,7 @@ import org.springframework.context.annotation.DependsOn;
 import xyz.yuelai.filter.AuthShiroFilter;
 import xyz.yuelai.shiro.AuthRealm;
 import xyz.yuelai.shiro.CustomShiroFilterFactoryBean;
+import xyz.yuelai.shiro.ShiroCacheManager;
 
 import javax.servlet.Filter;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public DefaultWebSecurityManager securityManager(AuthRealm authRealm) {
+    public DefaultWebSecurityManager securityManager(AuthRealm authRealm, ShiroCacheManager shiroCacheManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
         securityManager.setRealm(authRealm);
@@ -63,6 +64,7 @@ public class ShiroConfig {
         subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
         securityManager.setSubjectDAO(subjectDAO);
 
+        securityManager.setCacheManager(shiroCacheManager);
         return securityManager;
     }
 
@@ -80,7 +82,6 @@ public class ShiroConfig {
 
         /* 拦截器 */
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
-        filterRuleMap.put("/**", "jwt");
         shiroFilter.setFilterChainDefinitionMap(filterRuleMap);
         return shiroFilter;
     }

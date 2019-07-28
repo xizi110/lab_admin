@@ -16,6 +16,7 @@ public class CommonExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public ResponseDTO handle(Exception e){
+        e.printStackTrace();
         return new ResponseDTO(Constant.CODE_SERVER_EXCEPTION, e.getMessage());
     }
 }

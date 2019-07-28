@@ -33,20 +33,19 @@ public class Constant {
     public static final int CODE_FORBIDDEN = 10004;
     public static final int CODE_SERVER_EXCEPTION = 10005;
     public static final int CODE_AUTHENTICATED = 10006;
-    public static final int INVALID_TOKEN = 10007;
+    public static final int CODE_INVALID_TOKEN = 10007;
+    public static final int CODE_NOT_OK = 10008;
+
+
 
 
     /**
      * JWT-salt
      */
     public static final String LOGIN_SALT = "LiZeZhong123";
-    /**
-     *  request请求头属性
-     */
-    public static final String REQUEST_AUTH_HEADER="Authorization";
 
     /**
-     *  JWT-account
+     *  JWT-username
      */
     public static final String USERNAME = "username";
 
@@ -61,8 +60,8 @@ public class Constant {
     public final static String SECRET_KEY = "LiZeZhong123";
 
     /**
-     *  JWT-token expire time
+     *  JWT-token expire time，单位分钟
      */
-    public final static Integer TOKEN_EXPIRE_TIME = 30;
+    public final static Integer TOKEN_EXPIRE_TIME = 1;
 
 }

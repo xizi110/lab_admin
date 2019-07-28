@@ -1,5 +1,6 @@
 package xyz.yuelai.shiro;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.extern.log4j.Log4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -9,6 +10,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import xyz.yuelai.pojo.domain.PermissionDO;
 import xyz.yuelai.pojo.domain.RoleDO;
@@ -16,8 +18,10 @@ import xyz.yuelai.pojo.domain.UserDO;
 import xyz.yuelai.service.IUserService;
 import xyz.yuelai.util.Constant;
 import xyz.yuelai.util.JwtUtil;
+import xyz.yuelai.util.RedisUtil;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 李泽众
@@ -29,6 +33,8 @@ import java.util.List;
 public class AuthRealm extends AuthorizingRealm {
 
     private IUserService userService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     public AuthRealm(IUserService userService) {
         this.userService = userService;
@@ -66,24 +72,31 @@ public class AuthRealm extends AuthorizingRealm {
         JwtToken token = (JwtToken) authenticationToken;
 
         if (token == null) {
-            throw new AuthenticationException("Token Invalid! Token is null!");
+            throw new AuthenticationException("未认证，请登录！");
         }
 
         String username = JwtUtil.getClaim(token.getToken(), Constant.USERNAME);
 
         if (username == null) {
-            throw new AuthenticationException("Token Invalid! username is null");
+            throw new AuthenticationException("Token不可用，请登录！");
         }
 
         UserDO userDO = (UserDO) userService.getUserByUsername(username).getData();
 
         if (userDO == null) {
-            return null;
+            throw new AuthenticationException("Token不可用，请登录！");
         }
-
-        if (JwtUtil.verify(token.getToken())) {
-            return new SimpleAuthenticationInfo(token.getToken(), token.getToken(), getName());
+        String tokens = token.getToken();
+        try {
+            JwtUtil.verify(tokens);
+            return new SimpleAuthenticationInfo(tokens, tokens, getName());
+        }catch (JWTVerificationException e){
+            if(redisUtil.exists(username) && tokens.equals(redisUtil.get(username))){
+                redisUtil.expire(username, 2, TimeUnit.MINUTES);
+                return new SimpleAuthenticationInfo(tokens, tokens, getName());
+            }else {
+                throw new AuthenticationException("Token不可用，请登录！");
+            }
         }
-        throw new AuthenticationException("Token Invalid! UnKnow case!");
     }
 }

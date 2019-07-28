@@ -5,11 +5,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import xyz.yuelai.pojo.dto.ResponseDTO;
 import xyz.yuelai.pojo.dto.in.AuthFormDTO;
 import xyz.yuelai.service.IAuthService;
+import xyz.yuelai.service.IPermissionService;
 import xyz.yuelai.util.Constant;
 
 /**
@@ -24,6 +26,8 @@ import xyz.yuelai.util.Constant;
 public class AuthController {
 
     private IAuthService authService;
+    @Autowired
+    private IPermissionService permissionService;
 
 
     public AuthController(IAuthService authService) {

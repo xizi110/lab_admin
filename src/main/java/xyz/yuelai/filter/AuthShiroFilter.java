@@ -2,18 +2,13 @@ package xyz.yuelai.filter;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
-import org.springframework.http.HttpStatus;
 import xyz.yuelai.shiro.JwtToken;
-import xyz.yuelai.util.Constant;
-import xyz.yuelai.util.JwtUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * @author 李泽众
@@ -26,6 +21,7 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
 
     /**
      * 检测Header里面是否包含Authorization请求头
+     *
      * @param request
      * @param response
      * @return
@@ -37,6 +33,7 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
 
     /**
      * 调用AuthRealm认证
+     *
      * @param request
      * @param response
      * @return
@@ -51,12 +48,19 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        if(isLoginAttempt(request, response)){
+        /* 请求头含有Authorization字段 */
+        if (isLoginAttempt(request, response)) {
             try {
+                /* 调用AuthRealm的doGetAuthenticationInfo方法，验证token */
                 return executeLogin(request, response);
             } catch (Exception e) {
-                e.printStackTrace();
-//                response401(request, response);
+                log.error(e.getMessage());
+                HttpServletRequest req = (HttpServletRequest) request;
+                String loginUri = "/auth/login";
+                /* token验证失败，如果是登录就使用账户密码登录，否则返回401错误 */
+                if (!loginUri.equals(req.getRequestURI())) {
+                    response401(request, response);
+                }
             }
         }
         return true;
@@ -70,6 +74,7 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
 
     /**
      * 401非法请求
+     *
      * @param req
      * @param resp
      */
@@ -77,7 +82,7 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
         HttpServletRequest request = (HttpServletRequest) req;
         try {
             request.getRequestDispatcher("/auth/401").forward(request, resp);
-        }catch (ServletException e) {
+        } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
