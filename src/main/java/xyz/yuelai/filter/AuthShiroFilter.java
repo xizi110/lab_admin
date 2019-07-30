@@ -60,6 +60,7 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
                 /* token验证失败，如果是登录就使用账户密码登录，否则返回401错误 */
                 if (!loginUri.equals(req.getRequestURI())) {
                     response401(request, response);
+                    return false;
                 }
             }
         }
@@ -82,9 +83,9 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
         HttpServletRequest request = (HttpServletRequest) req;
         try {
             request.getRequestDispatcher("/auth/401").forward(request, resp);
-        } catch (ServletException e) {
-            e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ServletException e) {
             e.printStackTrace();
         }
 

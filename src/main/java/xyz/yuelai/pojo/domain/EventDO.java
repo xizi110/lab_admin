@@ -1,5 +1,6 @@
 package xyz.yuelai.pojo.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Setter;
 import lombok.ToString;
 

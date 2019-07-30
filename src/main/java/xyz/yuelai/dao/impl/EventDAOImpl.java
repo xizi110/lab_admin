@@ -1,6 +1,5 @@
 package xyz.yuelai.dao.impl;
 
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -9,7 +8,6 @@ import xyz.yuelai.pojo.bo.PageBO;
 import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.util.Constant;
 
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -28,7 +26,7 @@ public class EventDAOImpl implements IEventDAO {
 
     @Override
     public void save(EventDO eventDO) {
-
+        hibernateTemplate.save(eventDO);
     }
 
     @Override

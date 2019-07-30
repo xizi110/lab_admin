@@ -1,5 +1,6 @@
 package xyz.yuelai.service;
 
+import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.pojo.dto.ResponseDTO;
 
 /**
@@ -16,5 +17,12 @@ public interface IEventService {
      * @return
      */
     ResponseDTO list(int currentPage);
+
+    /**
+     * 保存事记
+     * @param eventDO
+     * @return
+     */
+    ResponseDTO save(EventDO eventDO);
 
 }

@@ -3,9 +3,11 @@ package xyz.yuelai.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.pojo.dto.ResponseDTO;
 import xyz.yuelai.service.IEventService;
 import xyz.yuelai.util.Constant;
@@ -39,14 +41,14 @@ public class EventController {
     }
 
     /**
-     * 权限测试
+     * 添加大事记，大事记写作业面
      * @return
      */
-    @ApiOperation(value = "event的delete权限")
+    @ApiOperation(value = "添加大事记")
     @ResponseBody
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ResponseDTO delete(){
-        return new ResponseDTO(Constant.CODE_OK, "还有event/delete权限！");
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseDTO add(@RequestBody EventDO eventDO){
+        return eventService.save(eventDO);
     }
 
     /**
