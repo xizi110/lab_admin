@@ -75,7 +75,7 @@ public class AuthServiceImpl implements IAuthService {
                     msg = "登录成功！";
                     tokenStr.put("token", token);
                     redisUtil.set(username, token);
-                    redisUtil.expire(username, 2, TimeUnit.MINUTES);
+                    redisUtil.expire(username, Constant.REDIS_TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
                 }
             }
         }

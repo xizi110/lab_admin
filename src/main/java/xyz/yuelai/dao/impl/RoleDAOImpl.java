@@ -48,11 +48,6 @@ public class RoleDAOImpl implements IRoleDAO{
         return null;
     }
 
-    @Override
-    public List<RoleDO> listBySQL(String sql) {
-        return null;
-    }
-
     private Session getSession(){
         return hibernateTemplate.getSessionFactory().getCurrentSession();
     }

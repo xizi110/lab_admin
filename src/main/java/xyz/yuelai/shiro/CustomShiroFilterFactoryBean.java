@@ -28,12 +28,6 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
     public Map<String, String> getFilterChainDefinitionMap() {
         Map<String, String> filterChainDefinitionMap = super.getFilterChainDefinitionMap();
         List<PermissionDO> permissionDOList = permissionService.list();
-        /* 从数据库配置权限 */
-        for (PermissionDO permissionDO : permissionDOList) {
-            String permissionURI = permissionDO.getPermissionURI();
-            String permissionValue = permissionDO.getPermissionValue();
-            filterChainDefinitionMap.put(permissionURI, "perms[" + permissionValue + "]");
-        }
         /* 静态资源,以及返回出错信息的 controller 不需要认证*/
         filterChainDefinitionMap.put("/swagger-ui.html","anon");
         filterChainDefinitionMap.put("/swagger-resources/*","anon");
@@ -43,6 +37,13 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
 
         /* 其余链接都要经过jwt认证 */
         filterChainDefinitionMap.put("/**", "jwt");
+
+        /* 从数据库配置权限,个人权限认证 */
+        for (PermissionDO permissionDO : permissionDOList) {
+            String permissionURI = permissionDO.getPermissionURI();
+            String permissionValue = permissionDO.getPermissionValue();
+            filterChainDefinitionMap.put(permissionURI, "perms[" + permissionValue + "]");
+        }
 
         setFilterChainDefinitionMap(filterChainDefinitionMap);
         return filterChainDefinitionMap;

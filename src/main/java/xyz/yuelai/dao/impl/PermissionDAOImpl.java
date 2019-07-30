@@ -57,9 +57,4 @@ public class PermissionDAOImpl implements IPermissionDAO {
         return null;
     }
 
-    @Override
-    public List<PermissionDO> listBySQL(String sql) {
-
-        return null;
-    }
 }

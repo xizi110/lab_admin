@@ -1,7 +1,5 @@
 package xyz.yuelai.dao;
 
-import java.util.List;
-
 /**
  * @author 李泽众
  * @date 2019/7/11-20:52
@@ -34,12 +32,5 @@ public interface ICommonDAO<T> {
      * @return
      */
     T getById(Long id);
-
-    /**
-     * 通过SQL查询
-     * @param sql 查询的sql语句
-     * @return
-     */
-    List<T> listBySQL(String sql);
 
 }

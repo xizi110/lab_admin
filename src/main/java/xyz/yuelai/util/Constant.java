@@ -36,14 +36,6 @@ public class Constant {
     public static final int CODE_INVALID_TOKEN = 10007;
     public static final int CODE_NOT_OK = 10008;
 
-
-
-
-    /**
-     * JWT-salt
-     */
-    public static final String LOGIN_SALT = "LiZeZhong123";
-
     /**
      *  JWT-username
      */
@@ -62,6 +54,18 @@ public class Constant {
     /**
      *  JWT-token expire time，单位分钟
      */
-    public final static Integer TOKEN_EXPIRE_TIME = 1;
+    public final static Integer TOKEN_EXPIRE_TIME = 30;
+
+
+    /**
+     *  JWT-token expire time，单位分钟
+     */
+    public final static Integer REDIS_TOKEN_EXPIRE_TIME = 60;
+
+
+    /**
+     * 默认每页显示30条数据
+     */
+    public static final Integer PAGE_COUNT = 30;
 
 }

@@ -50,16 +50,6 @@ public class UserDAOImpl implements IUserDAO {
     }
 
     @Override
-    public List<UserDO> listBySQL(String sql) {
-        List<UserDO> userDOList = getSession().createSQLQuery(sql).addEntity(UserDO.class).list();
-        return userDOList;
-    }
-
-    private Session getSession(){
-        return hibernateTemplate.getSessionFactory().getCurrentSession();
-    }
-
-    @Override
     public UserDO getUserByUsername(String username) {
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(UserDO.class);
         detachedCriteria.add(Restrictions.eq("username", username));

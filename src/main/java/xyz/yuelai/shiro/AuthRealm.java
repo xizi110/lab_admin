@@ -91,8 +91,9 @@ public class AuthRealm extends AuthorizingRealm {
             JwtUtil.verify(tokens);
             return new SimpleAuthenticationInfo(tokens, tokens, getName());
         }catch (JWTVerificationException e){
+            /* 刷新redis的token */
             if(redisUtil.exists(username) && tokens.equals(redisUtil.get(username))){
-                redisUtil.expire(username, 2, TimeUnit.MINUTES);
+                redisUtil.expire(username, Constant.REDIS_TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
                 return new SimpleAuthenticationInfo(tokens, tokens, getName());
             }else {
                 throw new AuthenticationException("Token不可用，请登录！");
