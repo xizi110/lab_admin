@@ -12,26 +12,26 @@ import java.util.Set;
  * @author 李泽众
  * @date 2019/7/28-12:33
  */
-public class ShiroCache<K, V> implements Cache<String, String> {
+public class ShiroCache<K, V> implements Cache<K, V> {
 
     @Autowired
     private RedisUtil redisUtil;
 
     @Override
-    public String get(String s) throws CacheException {
+    public Object get(Object s) throws CacheException {
         return redisUtil.get(s);
     }
 
     @Override
-    public String put(String s, String o) throws CacheException {
-        String val = redisUtil.get(s);
+    public Object put(Object s, Object o) throws CacheException {
+        Object val = redisUtil.get(s);
         redisUtil.set(s, o);
         return val;
     }
 
     @Override
-    public String remove(String s) throws CacheException {
-        String val = redisUtil.get(s);
+    public Object remove(Object s) throws CacheException {
+        Object val = redisUtil.get(s);
         redisUtil.delete(s);
         return val;
     }
@@ -46,12 +46,12 @@ public class ShiroCache<K, V> implements Cache<String, String> {
     }
 
     @Override
-    public Set<String> keys() {
+    public Set<K> keys() {
         return null;
     }
 
     @Override
-    public Collection<String> values() {
-        return redisUtil.values();
+    public Collection<V> values() {
+        return null;
     }
 }

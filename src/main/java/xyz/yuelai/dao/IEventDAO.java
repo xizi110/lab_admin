@@ -1,7 +1,9 @@
 package xyz.yuelai.dao;
 
-import xyz.yuelai.pojo.bo.PageBO;
 import xyz.yuelai.pojo.domain.EventDO;
+import xyz.yuelai.pojo.dto.in.EventFormDTO;
+
+import java.util.List;
 
 /**
  * @author 李泽众
@@ -13,9 +15,9 @@ public interface IEventDAO extends ICommonDAO<EventDO> {
 
     /**
      * 查询事记
-     * @param page  页码
+     * @param formDTO  查询条件
      * @return
      */
-    PageBO<EventDO> list(int page);
+    List<EventDO> list(EventFormDTO formDTO);
 
 }

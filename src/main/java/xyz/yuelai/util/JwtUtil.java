@@ -22,7 +22,7 @@ public class JwtUtil {
      * @return
      */
     public static boolean verify(String token) {
-        String secret = getClaim(token, Constant.USERNAME) + Constant.SECRET_KEY;
+        String secret = getClaim(token, Constant.USERID) + getClaim(token, Constant.USERNAME) + Constant.SECRET_KEY;
         Algorithm algorithm = Algorithm.HMAC256(secret);
         JWTVerifier verifier = JWT.require(algorithm)
                 .build();
@@ -52,14 +52,15 @@ public class JwtUtil {
      * @param currentTimeMillis
      * @return
      */
-    public static String sign(String username, String currentTimeMillis) {
+    public static String sign(String userId, String username, String currentTimeMillis) {
         // 帐号加JWT私钥加密
-        String secret = username + Constant.SECRET_KEY;
+        String secret = userId + username + Constant.SECRET_KEY;
         // 此处过期时间，单位：毫秒
         Date date = new Date(System.currentTimeMillis() + Constant.TOKEN_EXPIRE_TIME * 60 * 1000L);
         Algorithm algorithm = Algorithm.HMAC256(secret);
 
         return JWT.create()
+                .withClaim(Constant.USERID, userId)
                 .withClaim(Constant.USERNAME, username)
                 .withClaim(Constant.CURRENT_TIME_MILLIS, currentTimeMillis)
                 .withExpiresAt(date)

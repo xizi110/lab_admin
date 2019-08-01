@@ -1,7 +1,7 @@
 package xyz.yuelai.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -18,34 +18,34 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtil {
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
-   public void set(String key, String value){
+   public void set(Object key, Object value){
        redisTemplate.opsForValue().set(key, value);
    }
 
-    public void delete(String key){
+    public void delete(Object key){
         redisTemplate.delete(key);
     }
 
-    public String get(String key){
+    public Object get(Object key){
         return redisTemplate.opsForValue().get(key);
     }
 
-    public boolean exists(String key){
+    public boolean exists(Object key){
         return redisTemplate.hasKey(key);
     }
 
-    public Set<String> keys(){
+    public Set<Object> keys(){
         return redisTemplate.keys("");
     }
 
-    public Set<String> values(){
-        Set<String> keys = keys();
-        Iterator<String> iterator = keys.iterator();
-        Set<String> values = new HashSet<>();
+    public Set<Object> values(){
+        Set<Object> keys = keys();
+        Iterator<Object> iterator = keys.iterator();
+        Set<Object> values = new HashSet<>();
         while (iterator.hasNext()){
-            String value = iterator.next();
+            Object value = iterator.next();
             values.add(value);
         }
         return values;

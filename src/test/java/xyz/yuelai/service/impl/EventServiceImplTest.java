@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.yuelai.config.RootConfig;
 import xyz.yuelai.config.ServletConfig;
 import xyz.yuelai.config.ShiroConfig;
+import xyz.yuelai.pojo.dto.ResponseDTO;
+import xyz.yuelai.pojo.dto.in.EventFormDTO;
 import xyz.yuelai.service.IEventService;
 
 /**
@@ -46,7 +48,10 @@ public class EventServiceImplTest {
      */
     @Test
     public void testList() throws Exception {
-        eventService.list(0);
+        EventFormDTO eventFormDTO = new EventFormDTO();
+        eventFormDTO.setAuthor("xizi");
+        ResponseDTO responseDTO = eventService.list(eventFormDTO);
+        System.out.println(responseDTO);
     }
 
 

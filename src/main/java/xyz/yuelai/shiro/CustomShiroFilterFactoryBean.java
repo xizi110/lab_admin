@@ -48,4 +48,5 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
         setFilterChainDefinitionMap(filterChainDefinitionMap);
         return filterChainDefinitionMap;
     }
+
 }

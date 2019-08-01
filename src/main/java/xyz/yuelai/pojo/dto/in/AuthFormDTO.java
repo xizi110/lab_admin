@@ -1,7 +1,6 @@
 package xyz.yuelai.pojo.dto.in;
 
 import lombok.Data;
-import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -12,7 +11,6 @@ import java.io.Serializable;
 
 
 @Data
-@ToString
 public class AuthFormDTO implements Serializable {
     private String username;
     private String password;

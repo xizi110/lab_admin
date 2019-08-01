@@ -1,12 +1,14 @@
 package xyz.yuelai.dao.impl;
 
-import org.hibernate.query.Query;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 import xyz.yuelai.dao.IEventDAO;
-import xyz.yuelai.pojo.bo.PageBO;
 import xyz.yuelai.pojo.domain.EventDO;
-import xyz.yuelai.util.Constant;
+import xyz.yuelai.pojo.dto.in.EventFormDTO;
 
 import java.util.List;
 
@@ -44,15 +46,32 @@ public class EventDAOImpl implements IEventDAO {
         return null;
     }
 
+    /**
+     * 决定由前台分页，后台不再分页
+     * 分页
+     * int index = 0;
+     * int offset = Constant.PAGE_COUNT;
+     * Integer page = formDTO.getPage();
+     * 起始下标不能小于0
+     * if( page != null && page > 0){
+     *   index = page * Constant.PAGE_COUNT;
+     * }
+     *
+     * 结束
+     * if(offset > eventDOList.size()){
+     *   offset = eventDOList.size();
+     * }
+     */
     @Override
-    public PageBO<EventDO> list(int page) {
-        return hibernateTemplate.execute(session -> {
-            long totalCount = (long)session.createQuery("select count(1) from EventDO").uniqueResult();
-            Query query = session.createQuery("from EventDO");
-            query.setFirstResult(page * Constant.PAGE_COUNT);
-            query.setMaxResults(Constant.PAGE_COUNT);
-            List<EventDO> eventList = query.list();
-            return new PageBO<>(page, totalCount, eventList);
-        });
+    public List<EventDO> list(EventFormDTO formDTO) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(EventDO.class);
+        if(!StringUtils.isEmpty(formDTO.getTitle())){
+            criteria.add(Restrictions.like("title", formDTO.getTitle(), MatchMode.ANYWHERE));
+        }
+        if(!StringUtils.isEmpty(formDTO.getAuthor())){
+            criteria.add(Restrictions.eq("author", formDTO.getAuthor()));
+        }
+        return (List<EventDO>) hibernateTemplate.findByCriteria(criteria);
     }
 }

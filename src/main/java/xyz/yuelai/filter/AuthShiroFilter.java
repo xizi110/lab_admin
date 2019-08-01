@@ -48,6 +48,11 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        HttpServletRequest req = (HttpServletRequest) request;
+        String loginUri = "/auth/login";
+        if (loginUri.equals(req.getRequestURI())) {
+            return true;
+        }
         /* 请求头含有Authorization字段 */
         if (isLoginAttempt(request, response)) {
             try {
@@ -55,17 +60,15 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
                 return executeLogin(request, response);
             } catch (Exception e) {
                 log.error(e.getMessage());
-                HttpServletRequest req = (HttpServletRequest) request;
-                String loginUri = "/auth/login";
-                /* token验证失败，如果是登录就使用账户密码登录，否则返回401错误 */
-                if (!loginUri.equals(req.getRequestURI())) {
-                    response401(request, response);
-                    return false;
-                }
             }
+
+
         }
-        return true;
+        response401(request,response);
+        return false;
     }
+
+
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {

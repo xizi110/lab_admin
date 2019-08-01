@@ -2,6 +2,7 @@ package xyz.yuelai.service;
 
 import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.pojo.dto.ResponseDTO;
+import xyz.yuelai.pojo.dto.in.EventFormDTO;
 
 /**
  * @author 李泽众
@@ -13,10 +14,10 @@ public interface IEventService {
 
     /**
      * 查询事记
-     * @param currentPage  页码
+     * @param formDTO  表单查询的条件
      * @return
      */
-    ResponseDTO list(int currentPage);
+    ResponseDTO list(EventFormDTO formDTO);
 
     /**
      * 保存事记

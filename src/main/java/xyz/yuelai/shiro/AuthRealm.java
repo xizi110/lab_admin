@@ -49,12 +49,12 @@ public class AuthRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
-        UserDO user = (UserDO) principalCollection.getPrimaryPrincipal();
+        String token = (String)principalCollection.getPrimaryPrincipal();
 
-        String username = JwtUtil.getClaim(principalCollection.toString(), Constant.USERNAME);
-        log.info(username);
+        Long userId = Long.valueOf(JwtUtil.getClaim(token, Constant.USERID));
+        log.info(userId);
 
-        List<RoleDO> roleDOList = userService.listRolesByUserId(user.getUserId());
+        List<RoleDO> roleDOList = userService.listRolesByUserId(userId);
         roleDOList.forEach(action -> info.addRole(action.getRoleName()));
 
 

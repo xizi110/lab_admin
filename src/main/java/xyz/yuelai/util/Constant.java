@@ -68,4 +68,5 @@ public class Constant {
      */
     public static final Integer PAGE_COUNT = 30;
 
+    public static final String USERID = "userId";
 }

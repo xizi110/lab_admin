@@ -2,15 +2,12 @@ package xyz.yuelai.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.web.bind.annotation.*;
 import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.pojo.dto.ResponseDTO;
+import xyz.yuelai.pojo.dto.in.EventFormDTO;
 import xyz.yuelai.service.IEventService;
-import xyz.yuelai.util.Constant;
 
 /**
  * @author 李泽众
@@ -18,8 +15,7 @@ import xyz.yuelai.util.Constant;
  */
 
 @Api(tags = "用于处理大事计")
-@Controller
-@RequestMapping(value = "/event")
+@RestController
 public class EventController {
 
     private IEventService eventService;
@@ -30,14 +26,15 @@ public class EventController {
 
     /**
      * 大事记页面初始化
+     * event权限
      * @return  大事记列表
      */
     @ApiOperation(value = "获取大事记列表")
     @ResponseBody
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseDTO list(){
-        int currentPage  = 1;
-        return eventService.list(currentPage - 1);
+    @RequestMapping(value = "/event", method = RequestMethod.GET)
+    @RequiresPermissions("event")
+    public ResponseDTO list(EventFormDTO formDTO){
+        return eventService.list(formDTO);
     }
 
     /**
@@ -46,19 +43,9 @@ public class EventController {
      */
     @ApiOperation(value = "添加大事记")
     @ResponseBody
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/event", method = RequestMethod.POST)
+    @RequiresPermissions("event")
     public ResponseDTO add(@RequestBody EventDO eventDO){
         return eventService.save(eventDO);
     }
-
-    /**
-     *  权限测试
-     * */
-    @ApiOperation(value = "replay")
-    @ResponseBody
-    @RequestMapping(value = "/replay", method = RequestMethod.POST)
-    public ResponseDTO delete1(){
-        return new ResponseDTO(Constant.CODE_OK, "还有/replay！");
-    }
-
 }
