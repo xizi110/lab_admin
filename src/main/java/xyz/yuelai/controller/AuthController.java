@@ -36,12 +36,6 @@ public class AuthController {
     @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseDTO login(@RequestBody AuthFormDTO loginDTO) {
-
-        /* 不要重复登录 */
-        if (SecurityUtils.getSubject().isAuthenticated()) {
-            return new ResponseDTO(Constant.CODE_AUTHENTICATED, "您已经登录了！");
-        }
-
         return authService.login(loginDTO.getUsername(), loginDTO.getPassword());
     }
 
@@ -83,9 +77,10 @@ public class AuthController {
         return new ResponseDTO(Constant.CODE_UNAUTHORIZED, "用户没有权限！");
     }
 
+    @ApiOperation(value = "token失效时，重定向到这里")
     @ResponseBody
-    @RequestMapping(value = "/401")
+    @RequestMapping(value = "/401", method = RequestMethod.GET)
     public ResponseDTO httpCode401() {
-        return new ResponseDTO(Constant.CODE_INVALID_TOKEN, "无效的token，请重新登录！");
+        return new ResponseDTO(Constant.CODE_INVALID_TOKEN, "令牌失效，请重新登录！");
     }
 }

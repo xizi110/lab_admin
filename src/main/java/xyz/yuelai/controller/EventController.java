@@ -32,7 +32,7 @@ public class EventController {
     @ApiOperation(value = "获取大事记列表")
     @ResponseBody
     @RequestMapping(value = "/event", method = RequestMethod.GET)
-    @RequiresPermissions("event")
+    @RequiresPermissions("event:list")
     public ResponseDTO list(EventFormDTO formDTO){
         return eventService.list(formDTO);
     }
@@ -44,7 +44,7 @@ public class EventController {
     @ApiOperation(value = "添加大事记")
     @ResponseBody
     @RequestMapping(value = "/event", method = RequestMethod.POST)
-    @RequiresPermissions("event")
+    @RequiresPermissions("event:add")
     public ResponseDTO add(@RequestBody EventDO eventDO){
         return eventService.save(eventDO);
     }

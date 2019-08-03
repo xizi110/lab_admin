@@ -1,5 +1,7 @@
 package xyz.yuelai.util;
 
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * @author 李泽众
  * @date 2019/7/12-12:54

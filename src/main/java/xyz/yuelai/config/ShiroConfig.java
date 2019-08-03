@@ -70,8 +70,6 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new CustomShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
-        shiroFilter.setUnauthorizedUrl("/auth/unauthorized");
-        shiroFilter.setLoginUrl("/auth/unauthenticated");
 
         /* 添加jwt过滤器 */
         Map<String, Filter> filterMap = new HashMap<>(1);

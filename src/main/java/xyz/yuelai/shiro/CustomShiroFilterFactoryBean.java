@@ -28,10 +28,9 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
     public Map<String, String> getFilterChainDefinitionMap() {
         Map<String, String> filterChainDefinitionMap = super.getFilterChainDefinitionMap();
         List<PermissionDO> permissionDOList = permissionService.list();
-        /* 静态资源,以及返回出错信息的 controller 不需要认证*/
-        filterChainDefinitionMap.put("/swagger-ui.html","anon");
-        filterChainDefinitionMap.put("/swagger-resources/*","anon");
-        filterChainDefinitionMap.put("/webjars/*","anon");
+        /* 不经过jwt认证 */
+        filterChainDefinitionMap.put("/auth/unauthenticated", "anon");
+        filterChainDefinitionMap.put("/auth/unauthorized", "anon");
         filterChainDefinitionMap.put("/auth/401", "anon");
         filterChainDefinitionMap.put("/auth/logout", "authc");
 
@@ -45,8 +44,13 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
             filterChainDefinitionMap.put(permissionURI, "perms[" + permissionValue + "]");
         }
 
-        setFilterChainDefinitionMap(filterChainDefinitionMap);
+//        setFilterChainDefinitionMap(filterChainDefinitionMap);
         return filterChainDefinitionMap;
     }
 
+    @Override
+    public void setFilterChainDefinitions(String definitions) {
+
+        super.setFilterChainDefinitions(definitions);
+    }
 }
