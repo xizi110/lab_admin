@@ -54,5 +54,4 @@ public class EventServiceImplTest {
         System.out.println(responseDTO);
     }
 
-
 } 

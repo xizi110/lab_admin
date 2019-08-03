@@ -42,6 +42,11 @@ public class Constant {
     public static final String USERNAME = "username";
 
     /**
+     * JWT-userId
+     */
+    public static final String USERID = "userId";
+
+    /**
      *  JWT-currentTimeMillis
      */
     public final static String CURRENT_TIME_MILLIS = "currentTimeMillis";
@@ -68,5 +73,13 @@ public class Constant {
      */
     public static final Integer PAGE_COUNT = 30;
 
-    public static final String USERID = "userId";
+    /**
+     * 图片生成路径
+     */
+    public static final String IMAGE_PATH = "/data/images/{yyyy}/{MM}/{dd}/{currentTimeMillis}.jpg";
+
+    /**
+     * 图片服务器
+     */
+    public static final String IMG_SERVER = "http://img.cnbaka.com";
 }

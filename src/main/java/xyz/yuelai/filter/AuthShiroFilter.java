@@ -49,8 +49,10 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         HttpServletRequest req = (HttpServletRequest) request;
+        String requestURI = req.getRequestURI();
+
         String loginUri = "/auth/login";
-        if (loginUri.equals(req.getRequestURI())) {
+        if (loginUri.equals(requestURI)) {
             return true;
         }
         /* 请求头含有Authorization字段 */
@@ -61,13 +63,10 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
-
-
         }
         response401(request,response);
         return false;
     }
-
 
 
     @Override
