@@ -18,7 +18,7 @@ public class CommonInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         response.setHeader("Access-Control-Allow-Origin", "*");
         if("OPTIONS".equals(request.getMethod())){
-            response.addHeader("Access-Control-Allow-Methods", "GET,POST");
+            response.addHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT");
             response.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization");
         }
         return true;

@@ -9,7 +9,9 @@ import org.springframework.util.StringUtils;
 import xyz.yuelai.dao.IEventDAO;
 import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.pojo.dto.in.EventFormDTO;
+import xyz.yuelai.util.Constant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ public class EventDAOImpl implements IEventDAO {
 
     @Override
     public void deleteById(EventDO eventDO) {
-
+        hibernateTemplate.delete(eventDO);
     }
 
     @Override
@@ -43,25 +45,9 @@ public class EventDAOImpl implements IEventDAO {
 
     @Override
     public EventDO getById(Long id) {
-        return null;
+        return hibernateTemplate.get(EventDO.class, id);
     }
 
-    /**
-     * 决定由前台分页，后台不再分页
-     * 分页
-     * int index = 0;
-     * int offset = Constant.PAGE_COUNT;
-     * Integer page = formDTO.getPage();
-     * 起始下标不能小于0
-     * if( page != null && page > 0){
-     *   index = page * Constant.PAGE_COUNT;
-     * }
-     *
-     * 结束
-     * if(offset > eventDOList.size()){
-     *   offset = eventDOList.size();
-     * }
-     */
     @Override
     public List<EventDO> list(EventFormDTO formDTO) {
 
@@ -72,6 +58,20 @@ public class EventDAOImpl implements IEventDAO {
         if(!StringUtils.isEmpty(formDTO.getAuthor())){
             criteria.add(Restrictions.eq("author", formDTO.getAuthor()));
         }
-        return (List<EventDO>) hibernateTemplate.findByCriteria(criteria);
+        List<EventDO> eventDOList = (List<EventDO>) hibernateTemplate.findByCriteria(criteria);
+
+        int fromIndex = formDTO.getPage() * Constant.PAGE_COUNT;
+        int toIndex = fromIndex + Constant.PAGE_COUNT;
+
+        if(toIndex > eventDOList.size()){
+            toIndex = eventDOList.size();
+        }
+
+        List<EventDO> eventDOS = new ArrayList<>();
+        /* 起始下标大于0小于max，终止下标大于等于起始下标，小于等于max */
+        if(fromIndex < eventDOList.size() && toIndex >= fromIndex){
+            eventDOS = eventDOList.subList(fromIndex, toIndex);
+        }
+        return eventDOS;
     }
 }

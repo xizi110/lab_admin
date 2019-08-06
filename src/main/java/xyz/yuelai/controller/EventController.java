@@ -25,7 +25,7 @@ public class EventController {
     }
 
     /**
-     * 大事记页面初始化
+     * 大事记查询，分页
      * event权限
      * @return  大事记列表
      */
@@ -33,7 +33,7 @@ public class EventController {
     @ResponseBody
     @RequestMapping(value = "/event", method = RequestMethod.GET)
     @RequiresPermissions("event:list")
-    public ResponseDTO list(EventFormDTO formDTO){
+    public ResponseDTO list(EventFormDTO formDTO) {
         return eventService.list(formDTO);
     }
 
@@ -47,5 +47,18 @@ public class EventController {
     @RequiresPermissions("event:add")
     public ResponseDTO add(@RequestBody EventDO eventDO){
         return eventService.save(eventDO);
+    }
+
+    /**
+     * 删除事记，根据id删除
+     * @param eventId   事记id
+     * @return
+     */
+    @ApiOperation(value = "删除大事记")
+    @ResponseBody
+    @RequestMapping(value = "/event", method = RequestMethod.DELETE)
+    @RequiresPermissions("event:delete")
+    public ResponseDTO delete(String eventId){
+        return eventService.delete(Long.valueOf(eventId));
     }
 }

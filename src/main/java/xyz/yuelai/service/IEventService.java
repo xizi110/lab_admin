@@ -26,4 +26,10 @@ public interface IEventService {
      */
     ResponseDTO save(EventDO eventDO);
 
+    /**
+     * 根据事记id删除事记
+     * @param eventId
+     * @return
+     */
+    ResponseDTO delete(long eventId);
 }

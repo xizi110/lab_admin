@@ -11,4 +11,5 @@ import lombok.Data;
 public class EventFormDTO {
     private String title;
     private String author;
+    private Integer page;
 }

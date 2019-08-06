@@ -30,6 +30,12 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public ResponseDTO list(EventFormDTO formDTO) {
+        if(formDTO.getPage() < 0){
+            formDTO.setPage(0);
+        }else {
+            formDTO.setPage(formDTO.getPage() - 1);
+        }
+
         List<EventDO> eventList = eventDAO.list(formDTO);
         return new ResponseDTO(Constant.CODE_OK, "查询成功！", eventList);
     }
@@ -60,6 +66,22 @@ public class EventServiceImpl implements IEventService {
             }
         }
 
+        return new ResponseDTO(code, msg);
+    }
+
+    @Override
+    public ResponseDTO delete(long eventId) {
+        Integer code;
+        String msg;
+        EventDO eventDO = eventDAO.getById(eventId);
+        if (eventDO == null) {
+            code = Constant.CODE_NOT_OK;
+            msg = String.format("删除失败，不存在事记id为[%d]的事记！", eventId);
+        } else {
+            eventDAO.deleteById(eventDO);
+            code = Constant.CODE_OK;
+            msg = "删除成功";
+        }
         return new ResponseDTO(code, msg);
     }
 }
