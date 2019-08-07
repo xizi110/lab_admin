@@ -44,26 +44,22 @@ public class EventServiceImpl implements IEventService {
     public ResponseDTO save(EventDO eventDO) {
         Integer code;
         String msg;
-        if (eventDO == null) {
-            code = Constant.CODE_ERROR_PARAMS;
-            msg = "请求参数出错！！";
-        } else {
-            String author = eventDO.getAuthor();
-            String title = eventDO.getTitle();
-            Byte isCarousel = eventDO.getCarousel();
 
-            if (StringUtils.isEmpty(author) || StringUtils.isEmpty(title)) {
-                code = Constant.CODE_ERROR_PARAMS;
-                msg = "作者和标题均不能为空！";
-            } else if (isCarousel == null || isCarousel > 1 || isCarousel < 0) {
-                code = Constant.CODE_ERROR_PARAMS;
-                msg = "参数[carousel]值异常，可取值[0, 1]！";
-            } else {
-                eventDO.setPublishDate(Timestamp.valueOf(LocalDateTime.now()));
-                eventDAO.save(eventDO);
-                code = Constant.CODE_OK;
-                msg = "事记保存成功！";
-            }
+        String author = eventDO.getAuthor();
+        String title = eventDO.getTitle();
+        Byte isCarousel = eventDO.getCarousel();
+
+        if (StringUtils.isEmpty(author) || StringUtils.isEmpty(title)) {
+            code = Constant.CODE_ERROR_PARAMS;
+            msg = "作者和标题均不能为空！";
+        } else if (isCarousel == null || isCarousel > 1 || isCarousel < 0) {
+            code = Constant.CODE_ERROR_PARAMS;
+            msg = "参数[carousel]值异常，可取值[0, 1]！";
+        } else {
+            eventDO.setPublishDate(Timestamp.valueOf(LocalDateTime.now()));
+            eventDAO.save(eventDO);
+            code = Constant.CODE_OK;
+            msg = "事记保存成功！";
         }
 
         return new ResponseDTO(code, msg);
@@ -80,7 +76,34 @@ public class EventServiceImpl implements IEventService {
         } else {
             eventDAO.deleteById(eventDO);
             code = Constant.CODE_OK;
-            msg = "删除成功";
+            msg = "事记删除成功！";
+        }
+        return new ResponseDTO(code, msg);
+    }
+
+    @Override
+    public ResponseDTO update(EventDO eventDO) {
+        Integer code;
+        String msg;
+        if(eventDO.getEventId() == null){
+            code = Constant.CODE_NOT_OK;
+            msg = "更新失败，事记id不能为空！";
+        }else {
+            String author = eventDO.getAuthor();
+            String title = eventDO.getTitle();
+            Byte isCarousel = eventDO.getCarousel();
+
+            if (StringUtils.isEmpty(author) || StringUtils.isEmpty(title)) {
+                code = Constant.CODE_ERROR_PARAMS;
+                msg = "作者和标题均不能为空！";
+            } else if (isCarousel == null || isCarousel > 1 || isCarousel < 0) {
+                code = Constant.CODE_ERROR_PARAMS;
+                msg = "参数[carousel]值异常，可取值[0, 1]！";
+            } else {
+                eventDAO.update(eventDO);
+                code = Constant.CODE_OK;
+                msg = "事记更新成功！";
+            }
         }
         return new ResponseDTO(code, msg);
     }

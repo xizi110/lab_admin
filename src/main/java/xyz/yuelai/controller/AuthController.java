@@ -67,7 +67,7 @@ public class AuthController {
     @ResponseBody
     @RequestMapping(value = "/unauthenticated", method = RequestMethod.GET)
     public ResponseDTO unauthenticated() {
-        return new ResponseDTO(Constant.CODE_UNAUTHENTICATED, "未认证用户。");
+        return new ResponseDTO(Constant.CODE_UNAUTHENTICATED, "用户没有登录！");
     }
 
     @ApiOperation(value = "服务器返回未授权信息")
@@ -81,6 +81,6 @@ public class AuthController {
     @ResponseBody
     @RequestMapping(value = "/401", method = RequestMethod.GET)
     public ResponseDTO httpCode401() {
-        return new ResponseDTO(Constant.CODE_INVALID_TOKEN, "令牌失效，请重新登录！");
+        return new ResponseDTO(Constant.CODE_INVALID_TOKEN, "身份认证已过期，请重新登录！");
     }
 }

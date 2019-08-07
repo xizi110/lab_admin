@@ -76,6 +76,8 @@ public class ShiroConfig {
         filterMap.put("jwt", new AuthShiroFilter());
         shiroFilter.setFilters(filterMap);
 
+        shiroFilter.setLoginUrl("/auth/unauthenticated");
+
         /* 拦截器 */
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
         shiroFilter.setFilterChainDefinitionMap(filterRuleMap);

@@ -32,4 +32,6 @@ public interface IEventService {
      * @return
      */
     ResponseDTO delete(long eventId);
+
+    ResponseDTO update(EventDO eventDO);
 }

@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -49,6 +50,8 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+
         String requestURI = req.getRequestURI();
 
         /* 放开swagger静态资源 */
@@ -68,34 +71,39 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
                 return executeLogin(request, response);
             } catch (Exception e) {
                 log.error(e.getMessage());
+                /* token失效 */
+                response(request,response, "/auth/401");
             }
+        }else {
+            /* 未登录 */
+            response(request,response, "/auth/unauthenticated");
         }
-        response401(request,response);
         return false;
     }
 
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        sendChallenge(request, response);
+           /*  不再响应401，由controller返回响应信息 */
+//        sendChallenge(request, response);
         return false;
     }
 
     /**
-     * 401非法请求
-     *
      * @param req
      * @param resp
+     * @param path 服务器内部跳转controller，进行响应
      */
-    private void response401(ServletRequest req, ServletResponse resp) {
+    private void response(ServletRequest req, ServletResponse resp, String path) {
+        HttpServletResponse response = (HttpServletResponse) resp;
         HttpServletRequest request = (HttpServletRequest) req;
+
         try {
-            request.getRequestDispatcher("/auth/401").forward(request, resp);
+            request.getRequestDispatcher(path).forward(request,response);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ServletException e) {
             e.printStackTrace();
         }
-
     }
 }

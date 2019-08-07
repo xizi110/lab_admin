@@ -14,8 +14,8 @@ import java.util.List;
 public interface IEventDAO extends ICommonDAO<EventDO> {
 
     /**
-     * 查询事记
-     * @param formDTO  查询条件
+     * 查询事记，根据查询条件查询，还可进行分页
+     * @param formDTO  封装的前台查询条件
      * @return
      */
     List<EventDO> list(EventFormDTO formDTO);

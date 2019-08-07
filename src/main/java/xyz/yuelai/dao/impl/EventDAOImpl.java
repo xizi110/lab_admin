@@ -1,5 +1,6 @@
 package xyz.yuelai.dao.impl;
 
+import org.hibernate.LockMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -40,7 +41,7 @@ public class EventDAOImpl implements IEventDAO {
 
     @Override
     public void update(EventDO eventDO) {
-
+        hibernateTemplate.update(eventDO, LockMode.READ);
     }
 
     @Override
