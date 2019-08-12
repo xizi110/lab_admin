@@ -1,9 +1,8 @@
 package xyz.yuelai.dao.impl;
 
 import org.hibernate.LockMode;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
+import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -53,12 +52,26 @@ public class EventDAOImpl implements IEventDAO {
     public List<EventDO> list(EventFormDTO formDTO) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(EventDO.class);
+
         if(!StringUtils.isEmpty(formDTO.getTitle())){
             criteria.add(Restrictions.like("title", formDTO.getTitle(), MatchMode.ANYWHERE));
         }
         if(!StringUtils.isEmpty(formDTO.getAuthor())){
             criteria.add(Restrictions.eq("author", formDTO.getAuthor()));
         }
+
+        /* 不查询内容列 */
+        ProjectionList projectionList = Projections.projectionList();
+        projectionList.add(Projections.property("eventId").as("eventId"));
+        projectionList.add(Projections.property("title").as("title"));
+        projectionList.add(Projections.property("author").as("author"));
+        projectionList.add(Projections.property("brief").as("brief"));
+        projectionList.add(Projections.property("publishDate").as("publishDate"));
+        projectionList.add(Projections.property("carousel").as("carousel"));
+        projectionList.add(Projections.property("carouselImgLink").as("carouselImgLink"));
+        projectionList.add(Projections.property("carouselEndDate").as("carouselEndDate"));
+        criteria.setProjection(projectionList).setResultTransformer(Transformers.aliasToBean(EventDO.class));
+
         List<EventDO> eventDOList = (List<EventDO>) hibernateTemplate.findByCriteria(criteria);
 
         int fromIndex = formDTO.getPage() * Constant.PAGE_COUNT;

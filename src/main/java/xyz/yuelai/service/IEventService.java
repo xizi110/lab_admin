@@ -33,5 +33,17 @@ public interface IEventService {
      */
     ResponseDTO delete(long eventId);
 
+    /**
+     * 跟新事记
+     * @param eventDO
+     * @return
+     */
     ResponseDTO update(EventDO eventDO);
+
+    /**
+     * 获取单个事记
+     * @param eventId
+     * @return
+     */
+    ResponseDTO get(Long eventId);
 }

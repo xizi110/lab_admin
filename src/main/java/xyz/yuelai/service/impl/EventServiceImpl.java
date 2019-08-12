@@ -28,6 +28,22 @@ public class EventServiceImpl implements IEventService {
         this.eventDAO = eventDAO;
     }
 
+
+    @Override
+    public ResponseDTO get(Long eventId) {
+        Integer code;
+        String msg;
+        EventDO eventDO = eventDAO.getById(eventId);
+        if (eventDO == null) {
+            code = Constant.CODE_NOT_OK;
+            msg = String.format("获取失败，不存在事记id为[%d]的事记！", eventId);
+        } else {
+            code = Constant.CODE_OK;
+            msg = "查询成功！";
+        }
+        return new ResponseDTO(code, msg, eventDO);
+    }
+
     @Override
     public ResponseDTO list(EventFormDTO formDTO) {
         if(formDTO.getPage() < 0){
@@ -107,4 +123,5 @@ public class EventServiceImpl implements IEventService {
         }
         return new ResponseDTO(code, msg);
     }
+
 }

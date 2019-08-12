@@ -27,6 +27,22 @@ public class EventController {
     }
 
     /**
+     * 单个事记查询
+     * event:get权限
+     * @return  一条被查询到的大事记
+     */
+    @ApiOperation(value = "查询单个大事记")
+    @ResponseBody
+    @RequestMapping(value = "/event/{eventId}", method = RequestMethod.GET)
+    @RequiresPermissions("event:get")
+    public ResponseDTO get(@PathVariable Long eventId) {
+        if (StringUtils.isEmpty(eventId)) {
+            return new ResponseDTO(Constant.CODE_ERROR_PARAMS, "请求参数出错！");
+        }
+        return eventService.get(eventId);
+    }
+
+    /**
      * 大事记查询，分页
      * event:list权限
      * @return  大事记列表
@@ -68,11 +84,11 @@ public class EventController {
     @ResponseBody
     @RequestMapping(value = "/event", method = RequestMethod.DELETE)
     @RequiresPermissions("event:delete")
-    public ResponseDTO delete(String eventId){
+    public ResponseDTO delete(Long eventId){
         if (StringUtils.isEmpty(eventId)) {
             return new ResponseDTO(Constant.CODE_ERROR_PARAMS, "请求参数出错！");
         }
-        return eventService.delete(Long.valueOf(eventId));
+        return eventService.delete(eventId);
     }
 
     @ApiOperation(value = "更新大事记")
