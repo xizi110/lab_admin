@@ -46,7 +46,7 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public ResponseDTO list(EventFormDTO formDTO) {
-        if(formDTO.getPage() < 0){
+        if(formDTO.getPage() <= 0){
             formDTO.setPage(0);
         }else {
             formDTO.setPage(formDTO.getPage() - 1);

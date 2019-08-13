@@ -47,7 +47,6 @@ public class EventDAOImplTest {
      */
     @Test
     public void testSave() throws Exception {
-//TODO: Test goes here... 
     }
 
     /**
@@ -55,7 +54,6 @@ public class EventDAOImplTest {
      */
     @Test
     public void testDeleteById() throws Exception {
-//TODO: Test goes here... 
     }
 
     /**
@@ -63,7 +61,6 @@ public class EventDAOImplTest {
      */
     @Test
     public void testUpdate() throws Exception {
-//TODO: Test goes here... 
     }
 
     /**
@@ -71,7 +68,6 @@ public class EventDAOImplTest {
      */
     @Test
     public void testGetById() throws Exception {
-//TODO: Test goes here... 
     }
 
     /**
@@ -87,7 +83,6 @@ public class EventDAOImplTest {
         }
         System.out.println(list);
 
-//TODO: Test goes here...
     }
 
 

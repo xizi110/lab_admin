@@ -3,13 +3,14 @@ package xyz.yuelai.filter;
 import lombok.extern.log4j.Log4j;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import xyz.yuelai.shiro.JwtToken;
+import xyz.yuelai.util.Constant;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author 李泽众
@@ -56,7 +57,7 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
 
         /* 放开swagger静态资源 */
         if(requestURI.startsWith("/swagger") || requestURI.startsWith("/webjars") ||
-                requestURI.startsWith("/v2")){
+                requestURI.startsWith("/v2") || "OPTIONS".equals(req.getMethod())){
             return true;
         }
 
@@ -68,15 +69,16 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
         if (isLoginAttempt(request, response)) {
             try {
                 /* 调用AuthRealm的doGetAuthenticationInfo方法，验证token */
-                return executeLogin(request, response);
+                executeLogin(request, response);
+                return true;
             } catch (Exception e) {
                 log.error(e.getMessage());
                 /* token失效 */
-                response(request,response, "/auth/401");
+                response(response, Constant.CODE_INVALID_TOKEN,"令牌已过期，请重新登录！");
             }
         }else {
             /* 未登录 */
-            response(request,response, "/auth/unauthenticated");
+            response(response, Constant.CODE_UNAUTHENTICATED,"请登录！");
         }
         return false;
     }
@@ -90,20 +92,26 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
     }
 
     /**
-     * @param req
      * @param resp
-     * @param path 服务器内部跳转controller，进行响应
+     * @param code 返回码
+     * @param msg 返回信息
      */
-    private void response(ServletRequest req, ServletResponse resp, String path) {
+    private void response(ServletResponse resp, int code, String msg) {
         HttpServletResponse response = (HttpServletResponse) resp;
-        HttpServletRequest request = (HttpServletRequest) req;
-
+        PrintWriter writer = null;
         try {
-            request.getRequestDispatcher(path).forward(request,response);
+            response.setContentType("application/json; charset=utf-8");
+            response.setCharacterEncoding("utf-8");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            writer = response.getWriter();
+            writer.write("{\"code\": " + code + ",\"msg\": \"" + msg + "\"}");
+            writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
+        }finally {
+            if(writer != null){
+                writer.close();
+            }
         }
     }
 }
