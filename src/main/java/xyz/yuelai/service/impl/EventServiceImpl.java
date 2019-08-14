@@ -3,6 +3,7 @@ package xyz.yuelai.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import xyz.yuelai.dao.IEventDAO;
+import xyz.yuelai.pojo.bo.PageBO;
 import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.pojo.dto.ResponseDTO;
 import xyz.yuelai.pojo.dto.in.EventFormDTO;
@@ -11,7 +12,6 @@ import xyz.yuelai.util.Constant;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author 李泽众
@@ -52,8 +52,9 @@ public class EventServiceImpl implements IEventService {
             formDTO.setPage(formDTO.getPage() - 1);
         }
 
-        List<EventDO> eventList = eventDAO.list(formDTO);
-        return new ResponseDTO(Constant.CODE_OK, "查询成功！", eventList);
+        PageBO<EventDO> pageBO = eventDAO.list(formDTO);
+        pageBO.setCurrentPage(formDTO.getPage());
+        return new ResponseDTO(Constant.CODE_OK, "查询成功！", pageBO);
     }
 
     @Override

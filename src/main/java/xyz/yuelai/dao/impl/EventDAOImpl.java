@@ -7,6 +7,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import xyz.yuelai.dao.IEventDAO;
+import xyz.yuelai.pojo.bo.PageBO;
 import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.pojo.dto.in.EventFormDTO;
 import xyz.yuelai.util.Constant;
@@ -49,7 +50,7 @@ public class EventDAOImpl implements IEventDAO {
     }
 
     @Override
-    public List<EventDO> list(EventFormDTO formDTO) {
+    public PageBO<EventDO> list(EventFormDTO formDTO) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(EventDO.class);
 
@@ -86,6 +87,7 @@ public class EventDAOImpl implements IEventDAO {
         if(fromIndex < eventDOList.size() && toIndex >= fromIndex){
             eventDOS = eventDOList.subList(fromIndex, toIndex);
         }
-        return eventDOS;
+        PageBO<EventDO> pageBO = new PageBO<>(formDTO.getPage(), eventDOList.size(), eventDOS);
+        return pageBO;
     }
 }

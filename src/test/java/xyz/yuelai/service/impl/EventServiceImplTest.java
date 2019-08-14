@@ -49,7 +49,7 @@ public class EventServiceImplTest {
     @Test
     public void testList() throws Exception {
         EventFormDTO eventFormDTO = new EventFormDTO();
-        eventFormDTO.setAuthor("xizi");
+//        eventFormDTO.setAuthor("xizi");
         eventFormDTO.setPage(0);
         ResponseDTO responseDTO = eventService.list(eventFormDTO);
         System.out.println(responseDTO);

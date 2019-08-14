@@ -55,12 +55,13 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
 
         String requestURI = req.getRequestURI();
 
-        /* 放开swagger静态资源 */
+        /* 放开swagger静态资源和跨域OPTIONS请求 */
         if(requestURI.startsWith("/swagger") || requestURI.startsWith("/webjars") ||
                 requestURI.startsWith("/v2") || "OPTIONS".equals(req.getMethod())){
             return true;
         }
 
+        /* 放开登录请求 */
         String loginUri = "/auth/login";
         if (loginUri.equals(requestURI)) {
             return true;

@@ -3,7 +3,6 @@ package xyz.yuelai.pojo.bo;
 import lombok.Data;
 import xyz.yuelai.util.Constant;
 
-import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +23,12 @@ public class PageBO<T> {
     /**
      * 总页数
      */
-    private Long totalPage;
+    private Integer totalPage;
 
     /**
      * 总数据
      */
-    private Long totalCount;
+    private Integer totalCount;
 
     /**
      * 当前页显示的数据数量
@@ -44,18 +43,18 @@ public class PageBO<T> {
     public PageBO() {
     }
 
-    public PageBO(Integer currentPage, Long totalCount, List<T> currentPageData) {
+    public PageBO(Integer currentPage, Integer totalCount, List<T> currentPageData) {
         this.currentPage = currentPage;
         this.totalCount = totalCount;
         this.currentPageData = currentPageData;
-        Long remainder = totalCount % Constant.PAGE_COUNT;
+        Integer remainder = totalCount % Constant.PAGE_COUNT;
         this.totalPage = remainder == 0 ? (totalCount / Constant.PAGE_COUNT) : (totalCount / Constant.PAGE_COUNT) + 1;
         this.pageCount = currentPageData.size();
     }
 
     public static void main(String[] args) {
         List<String> list = new ArrayList<>();
-        PageBO<String> pageBO = new PageBO<>(4, 100L, list);
+        PageBO<String> pageBO = new PageBO<>(4, 100, list);
         System.out.println(pageBO);
     }
 }

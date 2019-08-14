@@ -12,10 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.yuelai.config.RootConfig;
 import xyz.yuelai.config.ServletConfig;
 import xyz.yuelai.dao.IEventDAO;
+import xyz.yuelai.pojo.bo.PageBO;
 import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.pojo.dto.in.EventFormDTO;
-
-import java.util.List;
 
 /**
  * EventDAOImpl Tester.
@@ -77,11 +76,8 @@ public class EventDAOImplTest {
     public void testList() throws Exception {
         EventFormDTO eventFormDTO = new EventFormDTO();
         eventFormDTO.setPage(0);
-        List<EventDO> list = eventDAO.list(eventFormDTO);
-        for (EventDO eventDO : list) {
-            System.out.println(eventDO.getContent());
-        }
-        System.out.println(list);
+        PageBO<EventDO> pageBO = eventDAO.list(eventFormDTO);
+        System.out.println(pageBO);
 
     }
 

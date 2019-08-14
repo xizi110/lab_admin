@@ -60,17 +60,16 @@ public class AuthServiceImpl implements IAuthService {
             msg = String.format("用户名或密码长度过长，请保证在%d个字符以内！", Constant.LEGAL_STRING_LENGTH);
         } else {
             UserDO userDO = userDAO.getUserByUsername(username);
-            Long userId = userDO.getUserId();
             if (userDO == null) {
                 code = Constant.CODE_UNAUTHENTICATED;
                 msg = "认证失败，用户名或密码错误！！";
             } else {
                 String loginPassword = EncryptUtil.encrypt(password, username);
-
                 if (!userDO.getPassword().equals(loginPassword)) {
                     code = Constant.CODE_UNAUTHENTICATED;
                     msg = "认证失败，用户名或密码错误！！";
                 } else {
+                    Long userId = userDO.getUserId();
                     String token = new JwtToken(JwtUtil.sign(String.valueOf(userId),username, String.valueOf(System.currentTimeMillis()))).getToken();
                     code = Constant.CODE_OK;
                     msg = "登录成功！";
