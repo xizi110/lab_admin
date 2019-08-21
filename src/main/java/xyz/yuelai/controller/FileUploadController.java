@@ -39,7 +39,7 @@ public class FileUploadController {
             file.transferTo(file1);
             imageUploadDTO.setUploaded(1);
             imageUploadDTO.setFileName(file1.getName());
-            imageUploadDTO.setUrl(filePath.replace("/data", Constant.IMG_SERVER));
+            imageUploadDTO.setUrl(filePath.replace("/www/data", Constant.IMG_SERVER));
         } catch (IOException e) {
             e.printStackTrace();
             imageUploadDTO.setUploaded(0);

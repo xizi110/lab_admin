@@ -1,7 +1,5 @@
 package xyz.yuelai.util;
 
-import org.springframework.beans.factory.annotation.Value;
-
 /**
  * @author 李泽众
  * @date 2019/7/12-12:54
@@ -71,14 +69,14 @@ public class Constant {
 
 
     /**
-     * 默认每页显示30条数据
+     * 分页设置：默认每页显示30条数据
      */
     public static final Integer PAGE_COUNT = 30;
 
     /**
      * 图片生成路径
      */
-    public static final String IMAGE_PATH = "/data/images/{yyyy}/{MM}/{dd}/{currentTimeMillis}.jpg";
+    public static final String IMAGE_PATH = "/www/data/images/{yyyy}/{MM}/{dd}/{currentTimeMillis}.jpg";
 
     /**
      * 图片服务器

@@ -8,13 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.yuelai.config.RootConfig;
 import xyz.yuelai.config.ServletConfig;
 import xyz.yuelai.config.ShiroConfig;
+import xyz.yuelai.pojo.domain.EventDO;
 import xyz.yuelai.pojo.dto.ResponseDTO;
 import xyz.yuelai.pojo.dto.in.EventFormDTO;
 import xyz.yuelai.service.IEventService;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * EventServiceImpl Tester.
@@ -24,7 +29,7 @@ import xyz.yuelai.service.IEventService;
  * @since <pre>七月 29, 2019</pre>
  */
 
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED)
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration( classes = {RootConfig.class, ServletConfig.class, ShiroConfig.class})
@@ -41,6 +46,21 @@ public class EventServiceImplTest {
 
     @After
     public void after() throws Exception {
+    }
+
+    @Test
+    public void testSave() throws Exception{
+        EventDO eventDO = new EventDO();
+        eventDO.setTitle("biaoti");
+        eventDO.setAuthor("xizi");
+        eventDO.setPublishDate(Timestamp.valueOf(LocalDateTime.now()));
+        eventDO.setBrief("简介");
+        eventDO.setContent("内容");
+        eventDO.setCarousel((byte)0);
+
+        ResponseDTO save = eventService.save(eventDO);
+        System.out.println(save);
+
     }
 
     /**

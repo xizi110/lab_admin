@@ -63,7 +63,7 @@ public class AuthShiroFilter extends BasicHttpAuthenticationFilter {
 
         /* 放开登录请求 */
         String loginUri = "/auth/login";
-        if (loginUri.equals(requestURI)) {
+        if (requestURI.contains(loginUri) || requestURI.contains("/auth/register")) {
             return true;
         }
         /* 请求头含有Authorization字段 */

@@ -44,7 +44,7 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
             filterChainDefinitionMap.put(permissionURI, "perms[" + permissionValue + "]");
         }
 
-//        setFilterChainDefinitionMap(filterChainDefinitionMap);
+        setFilterChainDefinitionMap(filterChainDefinitionMap);
         return filterChainDefinitionMap;
     }
 
